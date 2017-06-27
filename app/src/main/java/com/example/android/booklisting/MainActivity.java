@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         mAdapter.clear();
 
-
         if (books != null && !books.isEmpty()) {
             mAdapter.addAll(books);
         }
