@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Book Listing</string>
+    <string name="no_books">there are no books</string>
+    <string name="no_connection">there is no network connection</string>
+</resources>
