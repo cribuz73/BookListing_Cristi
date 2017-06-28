@@ -16,16 +16,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.android.booklisting.MainActivity.LOG_TAG;
 
 /**
  * Created by Cristi on 6/26/2017.
  */
 
 public class WebQuery {
-    public static List<Book> fetchBookdata(String requestUrl) {
+    private static final String LOG_TAG = WebQuery.class.getName();
+
+    public static ArrayList<Book> fetchBookdata(String requestUrl) {
+        Log.i(LOG_TAG, "TEST : fetchBookdata Calling...");
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -39,7 +40,7 @@ public class WebQuery {
         }
 
         // Extract relevant fields from the JSON response and create an {@link Event} object
-        List<Book> book1 = extractFeatureFromJson(jsonResponse);
+        ArrayList<Book> book1 = extractFeatureFromJson(jsonResponse);
 
         // Return the {@link Event}
         return book1;
@@ -64,6 +65,9 @@ public class WebQuery {
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
+
+        Log.i(LOG_TAG, "TEST : initiating HTTP Request");
+
 
         if (url == null) {
             return jsonResponse;
@@ -112,13 +116,14 @@ public class WebQuery {
         return output.toString();
     }
 
-    private static List<Book> extractFeatureFromJson(String bookJSON) {
-        List<Book> books = new ArrayList<>();
+    private static ArrayList<Book> extractFeatureFromJson(String bookJSON) {
+        ArrayList<Book> books = new ArrayList<>();
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(bookJSON)) {
             return null;
         }
+        Log.i(LOG_TAG, "TEST : extracting the JSON");
 
         //extracting the JSON response//
 
@@ -130,24 +135,42 @@ public class WebQuery {
 
                 JSONArray itemsArray = baseJsonResponse.getJSONArray("items");
 
+
                 for (int i = 0; i < itemsArray.length(); i++) {
                     JSONObject currentBook = itemsArray.getJSONObject(i);
                     JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
                     String title = volumeInfo.getString("title");
-                    String year = volumeInfo.getString("publishedDate");
-                    String publisher = volumeInfo.getString("publisher");
+                    Log.i(LOG_TAG, "itemsArray Lenght = " + Integer.toString(i));
+
+                    Log.i(LOG_TAG, "TEST..Book title extracted from JSON......" + title);
+
+                    String year = "Year: ";
+                    if (volumeInfo.has("year")) {
+                        year = volumeInfo.getString("publishedDate");
+                    } else {
+                        year = " ";
+                    }
+
+                    String publisher = "Publisher: ";
+                    if (volumeInfo.has("publisher")) {
+                        publisher = volumeInfo.getString("publisher");
+                    } else {
+                        publisher = " ";
+                    }
+
                     String subtitle = " ";
                     if (volumeInfo.has("subtitle")) {
                         subtitle = volumeInfo.getString("subtitle");
                     } else {
-                        return null;
+                        subtitle = " ";
                     }
                     String author = "Author: ";
                     if (volumeInfo.has("authors")) {
                         JSONArray authorsArray = volumeInfo.getJSONArray("authors");
                         for (int j = 0; j < authorsArray.length(); j++) {
                             author = author + authorsArray.getString(j) + ", ";
+
                         }
                         //author = author.substring(0, author.length() - 1);
 
@@ -155,6 +178,7 @@ public class WebQuery {
                         author = "No authors found";
                     }
 
+                    Log.i(LOG_TAG, "TEST..Authors extracted from JSON......" + author);
 
                     Book book = new Book(title, subtitle, author, year, publisher);
                     books.add(book);

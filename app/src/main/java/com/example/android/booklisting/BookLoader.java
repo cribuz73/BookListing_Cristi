@@ -2,15 +2,16 @@ package com.example.android.booklisting;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.util.Log;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 /**
  * Created by Cristi on 6/26/2017.
  */
 
-public class BookLoader extends AsyncTaskLoader<List<Book>> {
+public class BookLoader extends AsyncTaskLoader<ArrayList<Book>> {
 
 
     /**
@@ -21,6 +22,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     private String mUrl;
 
 
+
     public BookLoader(Context context, String url) {
         super(context);
         mUrl = url;
@@ -28,20 +30,26 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     @Override
     protected void onStartLoading() {
+        Log.i(LOG_TAG, "TEST : using onStartLoading");
+
         forceLoad();
     }
+
 
     /**
      * This is on a background thread.
      */
     @Override
-    public List<Book> loadInBackground() {
+    public ArrayList<Book> loadInBackground() {
+
+        Log.i(LOG_TAG, "TEST : using loadinBackground");
+
         if (mUrl == null) {
             return null;
         }
 
         // Perform the network request, parse the response, and extract a list of books.
-        List<Book> books = WebQuery.fetchBookdata(mUrl);
+        ArrayList<Book> books = WebQuery.fetchBookdata(mUrl);
         return books;
     }
 

@@ -1,10 +1,15 @@
 package com.example.android.booklisting;
 
+import android.util.Log;
+
 /**
  * Created by Cristi on 6/26/2017.
  */
 
 public class Book {
+
+    private static final String LOG_TAG = Book.class.getSimpleName();
+
     private String mBook_title;
 
     private String mBook_subtitle;
@@ -17,6 +22,9 @@ public class Book {
 
 
     public Book(String vTitle, String vSubtitle, String vAuthor, String vYear, String vPublisher) {
+
+        Log.i(LOG_TAG, "TEST : using Book JavaClass");
+
         mBook_title = vTitle;
         mBook_subtitle = vSubtitle;
         mBook_author = vAuthor;

@@ -1,13 +1,14 @@
 package com.example.android.booklisting;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Cristi on 6/26/2017.
@@ -16,17 +17,23 @@ import java.util.List;
 public class BookAdapter extends ArrayAdapter<Book> {
     private static final String LOG_TAG = BookAdapter.class.getSimpleName();
 
-    public BookAdapter(Activity context, List<Book> books) {
+    public BookAdapter(Activity context, ArrayList<Book> books) {
         super(context, 0, books);
+        Log.i(LOG_TAG, "TEST : using BOOK ADAPTER");
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View listItemView = convertView;
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+
+        Log.i(LOG_TAG, "TEST : create ListView in BOOK ADAPTER");
+
+        View listView = convertView;
+        if (listView == null) {
+            listView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
         }
+        Log.i(LOG_TAG, "TEST : start create books in BOOK ADAPTER");
 
         Book currentBook = getItem(position);
 
@@ -37,22 +44,22 @@ public class BookAdapter extends ArrayAdapter<Book> {
         String publisher = currentBook.getBookPublisher();
 
 
-        TextView titleTextView = (TextView) listItemView.findViewById(R.id.title);
+        TextView titleTextView = (TextView) listView.findViewById(R.id.title);
         titleTextView.setText(title);
 
-        TextView subtitleTextView = (TextView) listItemView.findViewById(R.id.subtitle);
+        TextView subtitleTextView = (TextView) listView.findViewById(R.id.subtitle);
         subtitleTextView.setText(subtitle);
 
-        TextView authorTextView = (TextView) listItemView.findViewById(R.id.author);
+        TextView authorTextView = (TextView) listView.findViewById(R.id.author);
         authorTextView.setText(author);
 
-        TextView yearTextView = (TextView) listItemView.findViewById(R.id.year);
+        TextView yearTextView = (TextView) listView.findViewById(R.id.year);
         yearTextView.setText(year);
 
-        TextView publisherTextView = (TextView) listItemView.findViewById(R.id.publisher);
+        TextView publisherTextView = (TextView) listView.findViewById(R.id.publisher);
         publisherTextView.setText(publisher);
 
-        return listItemView;
+        return listView;
     }
 
 }
