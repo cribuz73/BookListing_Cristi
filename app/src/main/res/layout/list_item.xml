@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="Android for users" />
 
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorBlack"
             android:textSize="17sp"
             android:textStyle="bold"
             tools:text="George Levis" />
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="17sp"
             android:textStyle="bold"
             tools:text="2005" />
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorBlack"
             android:textSize="17sp"
             android:textStyle="bold"
             tools:text="Cosmano" />

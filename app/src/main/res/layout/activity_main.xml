@@ -8,9 +8,33 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="0.5dp"
         android:orientation="vertical" />
+
+    <EditText
+        android:id="@+id/titleImput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Title (complete or a key word)"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/authorImput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleImput"
+        android:hint="Author name"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/authorImput"
+        android:text="Find" />
 
     <TextView
         android:id="@+id/empty_view"

@@ -146,17 +146,19 @@ public class WebQuery {
                     Log.i(LOG_TAG, "TEST..Book title extracted from JSON......" + title);
 
                     String year = "Year: ";
-                    if (volumeInfo.has("year")) {
-                        year = volumeInfo.getString("publishedDate");
+                    if (volumeInfo.has("publishedDate")) {
+                        year = year + volumeInfo.getString("publishedDate");
+                        Log.i(LOG_TAG, "TEST..Book year extracted from JSON......" + year);
+
                     } else {
-                        year = " ";
+                        year = year + " ";
                     }
 
                     String publisher = "Publisher: ";
                     if (volumeInfo.has("publisher")) {
-                        publisher = volumeInfo.getString("publisher");
+                        publisher = publisher + volumeInfo.getString("publisher");
                     } else {
-                        publisher = " ";
+                        publisher = publisher + " ";
                     }
 
                     String subtitle = " ";

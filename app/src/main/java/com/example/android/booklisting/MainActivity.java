@@ -10,21 +10,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static com.example.android.booklisting.R.id.authorImput;
+import static com.example.android.booklisting.R.id.search;
+import static com.example.android.booklisting.R.id.titleImput;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<Book>> {
 
     public static final String LOG_TAG = MainActivity.class.getName();
     private static final int BOOK_LOADER_ID = 1;
-    private static final String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=15";
-
-
     public BookAdapter mAdapter;
-
+    private String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private TextView mEmptyStateTextView;
 
     @Override
@@ -34,18 +37,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
         Log.i(LOG_TAG, "TEST : using on create in mainActivity");
 
-        //**  public String startSearch (View v) {
-        //       EditText getTitle = (EditText) findViewById(R.id.titleImput);
-        //     String titleImput = getTitle.getText().toString().trim();
-
-        //     EditText getAuthor = (EditText) findViewById(R.id.authorImput);
-        //     String authorImput = getAuthor.getText().toString().trim();
-
-//        String urlFinal = "https://www.googleapis.com/books/v1/volumes?q=" + titleImput + "+" + "inauthor:" + authorImput;
-
-//        return urlFinal;
-
-//    }
+        final LoaderManager loaderManager = getLoaderManager();
 
         // Get a reference to the ListView, and attach the adapter to the listView.
         ListView listView = (ListView) findViewById(R.id.list);
@@ -53,34 +45,50 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         listView.setEmptyView(mEmptyStateTextView);
 
-        listView.setAdapter(mAdapter);
         mAdapter = new BookAdapter(this, new ArrayList<Book>());
+        listView.setAdapter(mAdapter);
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+        final View loadingIndicator = findViewById(R.id.progress_bar);
+        loadingIndicator.setVisibility(View.GONE);
 
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        final EditText getTitle = (EditText) findViewById(titleImput);
+        final EditText getAuthor = (EditText) findViewById(authorImput);
 
+        final Button SearchButton = (Button) findViewById(search);
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+        SearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.clear();
 
-            LoaderManager loaderManager = getLoaderManager();
+                getTitle.setVisibility(View.GONE);
+                getAuthor.setVisibility(View.GONE);
+                SearchButton.setVisibility(View.GONE);
+                mEmptyStateTextView.setText("");
+                String titleImput = getTitle.getText().toString().trim();
+                String authorImput = getAuthor.getText().toString().trim();
+                BOOK_REQUEST_URL = BOOK_REQUEST_URL + titleImput + "+" + "inauthor:" + authorImput;
+                Log.v("my_tag", "url being created is: " + BOOK_REQUEST_URL);
 
-            Log.i(LOG_TAG, "TEST : initialising loader");
+                if (iConnection()) {
 
-            loaderManager.initLoader(BOOK_LOADER_ID, null, this);
-        } else {
-            View loadingIndicator = findViewById(R.id.progress_bar);
-            loadingIndicator.setVisibility(View.GONE);
-
-            mEmptyStateTextView.setText(R.string.no_connection);
-        }
+                    loadingIndicator.setVisibility(View.VISIBLE);
+                    Log.i(LOG_TAG, "TEST : initialising loader");
+                    loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+                } else {
+                    View loadingIndicator = findViewById(R.id.progress_bar);
+                    loadingIndicator.setVisibility(View.GONE);
+                    mEmptyStateTextView.setText(R.string.no_connection);
+                }
+            }
+        });
 
     }
 
     @Override
     public Loader<ArrayList<Book>> onCreateLoader(int id, Bundle args) {
         Log.i(LOG_TAG, "TEST : using onCreateLoader");
+        Log.v("my_tag", "url being created is: " + BOOK_REQUEST_URL);
 
         return new BookLoader(this, BOOK_REQUEST_URL);
     }
@@ -109,4 +117,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         mAdapter.clear();
     }
 
+    private boolean iConnection() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
 }
