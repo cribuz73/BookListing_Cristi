@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         final LoaderManager loaderManager = getLoaderManager();
 
         // Get a reference to the ListView, and attach the adapter to the listView.
-        ListView listView = (ListView) findViewById(R.id.list);
+        final ListView listView = (ListView) findViewById(R.id.list);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         listView.setEmptyView(mEmptyStateTextView);
@@ -53,17 +54,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
         final EditText getTitle = (EditText) findViewById(titleImput);
         final EditText getAuthor = (EditText) findViewById(authorImput);
-
         final Button SearchButton = (Button) findViewById(search);
 
         SearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAdapter.clear();
-
-                getTitle.setVisibility(View.GONE);
-                getAuthor.setVisibility(View.GONE);
-                SearchButton.setVisibility(View.GONE);
                 mEmptyStateTextView.setText("");
                 String titleImput = getTitle.getText().toString().trim();
                 String authorImput = getAuthor.getText().toString().trim();
@@ -80,9 +76,21 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                     loadingIndicator.setVisibility(View.GONE);
                     mEmptyStateTextView.setText(R.string.no_connection);
                 }
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         });
 
+        final Button Reset = (Button) findViewById(R.id.reset);
+
+        Reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTitle.setText("");
+                getAuthor.setText("");
+                BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+            }
+        });
     }
 
     @Override
@@ -113,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
     @Override
     public void onLoaderReset(Loader<ArrayList<Book>> loader) {
         Log.i(LOG_TAG, "TEST : using onLoadReset");
-
         mAdapter.clear();
     }
 
