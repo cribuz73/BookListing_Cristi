@@ -26,14 +26,12 @@ public class BookAdapter extends ArrayAdapter<Book> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.i(LOG_TAG, "TEST : create ListView in BOOK ADAPTER");
 
         View listView = convertView;
         if (listView == null) {
             listView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
         }
-        Log.i(LOG_TAG, "TEST : start create books in BOOK ADAPTER");
 
         Book currentBook = getItem(position);
 

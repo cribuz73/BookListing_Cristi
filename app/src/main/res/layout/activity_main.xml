@@ -13,14 +13,14 @@
             android:id="@+id/titleImput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Title (complete or a key word)"
+            android:hint="@string/title"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/authorImput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Author name"
+            android:hint="@string/author"
             android:inputType="text" />
 
         <LinearLayout
@@ -32,14 +32,14 @@
                 android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-                android:text="Search" />
+                android:text="@string/search" />
 
     <Button
         android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:text="Reset filters" />
+        android:text="@string/reset" />
 
 
         </LinearLayout>

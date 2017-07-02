@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(LOG_TAG, "TEST : using on create in mainActivity");
-
         final LoaderManager loaderManager = getLoaderManager();
 
         // Get a reference to the ListView, and attach the adapter to the listView.
@@ -68,7 +66,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
                 if (iConnection()) {
                     loadingIndicator.setVisibility(View.VISIBLE);
+                    BOOK_LOADER_ID = BOOK_LOADER_ID + 1;
                     loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+
                 } else {
                     View loadingIndicator = findViewById(R.id.progress_bar);
                     loadingIndicator.setVisibility(View.GONE);
@@ -77,7 +77,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
+
         });
+        loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+
 
         final Button Reset = (Button) findViewById(R.id.reset);
 
@@ -96,16 +99,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public Loader<ArrayList<Book>> onCreateLoader(int id, Bundle args) {
-        Log.i(LOG_TAG, "TEST : using onCreateLoader");
         Log.v("my_tag", "url being created is: " + BOOK_REQUEST_URL);
-
         return new BookLoader(this, BOOK_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Book>> loader, ArrayList<Book> books) {
-
-        Log.i(LOG_TAG, "TEST : using onLoadFinished");
 
         View loadingIndicator = findViewById(R.id.progress_bar);
         loadingIndicator.setVisibility(View.GONE);
@@ -121,14 +120,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
 
     @Override
     public void onLoaderReset(Loader<ArrayList<Book>> loader) {
-        Log.i(LOG_TAG, "TEST : using onLoadReset");
         mAdapter.clear();
     }
 
     private boolean iConnection() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }

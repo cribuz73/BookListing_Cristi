@@ -42,8 +42,6 @@ public class BookLoader extends AsyncTaskLoader<ArrayList<Book>> {
     @Override
     public ArrayList<Book> loadInBackground() {
 
-        Log.i(LOG_TAG, "TEST : using loadinBackground");
-
         if (mUrl == null) {
             return null;
         }

@@ -26,7 +26,6 @@ public class WebQuery {
     private static final String LOG_TAG = WebQuery.class.getName();
 
     public static ArrayList<Book> fetchBookdata(String requestUrl) {
-        Log.i(LOG_TAG, "TEST : fetchBookdata Calling...");
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -65,9 +64,6 @@ public class WebQuery {
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
-
-        Log.i(LOG_TAG, "TEST : initiating HTTP Request");
-
 
         if (url == null) {
             return jsonResponse;
@@ -141,15 +137,10 @@ public class WebQuery {
                     JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
 
                     String title = volumeInfo.getString("title");
-                    Log.i(LOG_TAG, "itemsArray Lenght = " + Integer.toString(i));
-
-                    Log.i(LOG_TAG, "TEST..Book title extracted from JSON......" + title);
 
                     String year = "Year: ";
                     if (volumeInfo.has("publishedDate")) {
                         year = year + volumeInfo.getString("publishedDate");
-                        Log.i(LOG_TAG, "TEST..Book year extracted from JSON......" + year);
-
                     } else {
                         year = year + " ";
                     }
@@ -172,15 +163,12 @@ public class WebQuery {
                         JSONArray authorsArray = volumeInfo.getJSONArray("authors");
                         for (int j = 0; j < authorsArray.length(); j++) {
                             author = author + authorsArray.getString(j) + ", ";
-
                         }
                         //author = author.substring(0, author.length() - 1);
 
                     } else {
                         author = "No authors found";
                     }
-
-                    Log.i(LOG_TAG, "TEST..Authors extracted from JSON......" + author);
 
                     Book book = new Book(title, subtitle, author, year, publisher);
                     books.add(book);
