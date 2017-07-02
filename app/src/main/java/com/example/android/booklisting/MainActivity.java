@@ -26,7 +26,7 @@ import static com.example.android.booklisting.R.id.titleImput;
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<Book>> {
 
     public static final String LOG_TAG = MainActivity.class.getName();
-    private static final int BOOK_LOADER_ID = 1;
+    private static int BOOK_LOADER_ID = 1;
     public BookAdapter mAdapter;
     private String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private TextView mEmptyStateTextView;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
         final View loadingIndicator = findViewById(R.id.progress_bar);
         loadingIndicator.setVisibility(View.GONE);
 
+
         final EditText getTitle = (EditText) findViewById(titleImput);
         final EditText getAuthor = (EditText) findViewById(authorImput);
         final Button SearchButton = (Button) findViewById(search);
@@ -64,12 +65,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 String titleImput = getTitle.getText().toString().trim();
                 String authorImput = getAuthor.getText().toString().trim();
                 BOOK_REQUEST_URL = BOOK_REQUEST_URL + titleImput + "+" + "inauthor:" + authorImput;
-                Log.v("my_tag", "url being created is: " + BOOK_REQUEST_URL);
 
                 if (iConnection()) {
-
                     loadingIndicator.setVisibility(View.VISIBLE);
-                    Log.i(LOG_TAG, "TEST : initialising loader");
                     loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
                 } else {
                     View loadingIndicator = findViewById(R.id.progress_bar);
@@ -89,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 getTitle.setText("");
                 getAuthor.setText("");
                 BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+                BOOK_LOADER_ID = BOOK_LOADER_ID + 1;
+                mAdapter.clear();
+                mEmptyStateTextView.setText("");
             }
         });
     }
