@@ -26,9 +26,11 @@ import static com.example.android.booklisting.R.id.titleImput;
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<Book>> {
 
     public static final String LOG_TAG = MainActivity.class.getName();
+    private static final String BASE_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
     private static int BOOK_LOADER_ID = 1;
     public BookAdapter mAdapter;
-    private String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+    private String BOOK_REQUEST_URL;
+    private String Query;
     private TextView mEmptyStateTextView;
 
     @Override
@@ -62,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                 mEmptyStateTextView.setText("");
                 String titleImput = getTitle.getText().toString().trim();
                 String authorImput = getAuthor.getText().toString().trim();
-                BOOK_REQUEST_URL = BOOK_REQUEST_URL + titleImput + "+" + "inauthor:" + authorImput;
+                Query = titleImput + "+" + "inauthor:" + authorImput;
+                BOOK_REQUEST_URL = BASE_REQUEST_URL + Query;
 
                 if (iConnection()) {
                     loadingIndicator.setVisibility(View.VISIBLE);
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
                     loadingIndicator.setVisibility(View.GONE);
                     mEmptyStateTextView.setText(R.string.no_connection);
                 }
+                Query = "";
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<A
             public void onClick(View v) {
                 getTitle.setText("");
                 getAuthor.setText("");
-                BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+                Query = "";
                 BOOK_LOADER_ID = BOOK_LOADER_ID + 1;
                 mAdapter.clear();
                 mEmptyStateTextView.setText("");
